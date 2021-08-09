@@ -13,9 +13,81 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "Ownable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Ownable__factory>;
+    getContractFactory(
       name: "Greeter",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Greeter__factory>;
+    getContractFactory(
+      name: "MACIFactory",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MACIFactory__factory>;
+    getContractFactory(
+      name: "BatchUpdateStateTreeVerifier",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.BatchUpdateStateTreeVerifier__factory>;
+    getContractFactory(
+      name: "BatchUpdateStateTreeVerifierMedium",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.BatchUpdateStateTreeVerifierMedium__factory>;
+    getContractFactory(
+      name: "QuadVoteTallyVerifier",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.QuadVoteTallyVerifier__factory>;
+    getContractFactory(
+      name: "QuadVoteTallyVerifierMedium",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.QuadVoteTallyVerifierMedium__factory>;
+    getContractFactory(
+      name: "ComputeRoot",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ComputeRoot__factory>;
+    getContractFactory(
+      name: "DomainObjs",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DomainObjs__factory>;
+    getContractFactory(
+      name: "SignUpGatekeeper",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.SignUpGatekeeper__factory>;
+    getContractFactory(
+      name: "Hasher",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Hasher__factory>;
+    getContractFactory(
+      name: "IncrementalMerkleTree",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IncrementalMerkleTree__factory>;
+    getContractFactory(
+      name: "IncrementalQuinTree",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IncrementalQuinTree__factory>;
+    getContractFactory(
+      name: "InitialVoiceCreditProxy",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.InitialVoiceCreditProxy__factory>;
+    getContractFactory(
+      name: "MACI",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MACI__factory>;
+    getContractFactory(
+      name: "SnarkVerifier",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.SnarkVerifier__factory>;
+    getContractFactory(
+      name: "PoseidonT3",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PoseidonT3__factory>;
+    getContractFactory(
+      name: "PoseidonT6",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PoseidonT6__factory>;
+    getContractFactory(
+      name: "VerifyTally",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VerifyTally__factory>;
 
     // default types
     getContractFactory(

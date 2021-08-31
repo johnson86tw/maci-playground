@@ -1,5 +1,5 @@
 {
-  "name": "appliedmaci",
+  "name": "maci-playground",
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
@@ -7,7 +7,8 @@
     "test": "npx hardhat test",
     "node": "npx hardhat node",
     "deploy:local": "npx hardhat run --network localhost scripts/deploy.js",
-    "build": "npx hardhat compile"
+    "build": "npx hardhat compile",
+    "tsc": "yarn run ts-node"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",

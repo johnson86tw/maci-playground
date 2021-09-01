@@ -1,8 +1,7 @@
 # Getting Started
 
-Please refer to the [implementation spec](./specs/) for technical details, and
-the original [ethresear.ch
-post](https://ethresear.ch/t/minimal-anti-collusion-infrastructure/5413) for a
+Please refer to the [implementation spec](https://github.com/appliedzkp/maci/tree/master/specs) for technical details, and
+the original [ethresear.ch post](https://ethresear.ch/t/minimal-anti-collusion-infrastructure/5413) for a
 high-level view.
 
 We welcome contributions to this project. Please join our
@@ -81,8 +80,7 @@ own unit tests.
 - `crypto`: low-level cryptographic operations.
 - `circuits`: zk-SNARK circuits.
 - `contracts`: Solidity contracts and deployment code.
-- `domainobjs`: Classes which represent high-level [domain
-  objects](https://wiki.c2.com/?DomainObject) particular to this project.
+- `domainobjs`: Classes which represent high-level [domain objects](https://wiki.c2.com/?DomainObject) particular to this project.
 - `core`: Business logic functions for message processing, vote tallying,
   and circuit input generation through `MaciState`, a state machine
   abstraction.
@@ -116,8 +114,7 @@ cd contracts
 npm run ganache
 ```
 
-In another terminal, run any of the tests found in `contracts/ts/__tests__/`
-via pattern matching, e.g.:
+In another terminal, run any of the tests found in `contracts/ts/__tests__/` via pattern matching, e.g.:
 
 ```bash
 cd contracts

@@ -32,8 +32,7 @@ Function signature:
 (_voteOptionTreeDepth: number): StateLeaf
 ```
 
-Generates and returns an equivalent `StateLeaf` [domain
-object](../domainobjs/). This function helps `MaciState` to generate a state
+Generates and returns an equivalent `StateLeaf` [domain object](https://github.com/appliedzkp/maci/tree/master/domainobjs). This function helps `MaciState` to generate a state
 tree.
 
 #### **`copy`**

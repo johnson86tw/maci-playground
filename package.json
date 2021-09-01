@@ -8,7 +8,10 @@
     "node": "npx hardhat node",
     "deploy:local": "npx hardhat run --network localhost scripts/deploy.js",
     "build": "npx hardhat compile",
-    "tsc": "yarn run ts-node"
+    "tsc": "yarn run ts-node",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
@@ -27,7 +30,8 @@
     "ts-generator": "^0.1.1",
     "ts-node": "^10.2.0",
     "typechain": "^5.1.2",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "vitepress": "^0.16.0"
   },
   "dependencies": {
     "@openzeppelin/contracts": "3.2.0",

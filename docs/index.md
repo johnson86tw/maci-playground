@@ -21,4 +21,14 @@ Although MACI can provide collusion resistance only if the coordinator is honest
 
 Note that MACI presumes an identity system where each legitimate member controls a unique Ethereum private key.
 
-MACI was originally proposed by Vitalik Buterin in this ethresear.ch post.
+MACI was originally proposed by Vitalik Buterin in this [ethresear.ch post](https://ethresear.ch/t/minimal-anti-collusion-infrastructure/5413).
+
+## Credits
+- Barry WhiteHat
+- Cory Dickson
+- Chih-Cheng Liang
+- Han Jian
+- Kendrick Tan
+- Kirill Goncharov
+- Kobi Gurkan
+- Koh Wei Jie

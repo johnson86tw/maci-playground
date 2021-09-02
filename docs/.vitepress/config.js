@@ -59,6 +59,7 @@ function getPackagesSidebar() {
         { text: "MACI CLI", link: "/packages/maci-cli" },
         { text: "MACI Core", link: "/packages/maci-core" },
         { text: "MACI Domain Objects", link: "/packages/maci-domainobjs" },
+        { text: "MACI Crypto", link: "/packages/maci-crypto" },
         { text: "MACI Circuits", link: "/packages/maci-circuits" },
       ],
     },

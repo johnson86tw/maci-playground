@@ -19,7 +19,7 @@ and/or change one's public key.
 ## `Message`
 
 The `Message` domain object is an encrypted `Command` and signature. That is, a
-`Message` is a `Ciphertext` (defined in [`maci-crypto`](../crypto/README.md))
+`Message` is a `Ciphertext` (defined in [`maci-crypto`](/packages/maci-crypto))
 which is the encrypted `Command` and its `Signature` (also defined in
 `maci-crypto`). In other terms:
 

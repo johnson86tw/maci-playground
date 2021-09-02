@@ -12,6 +12,11 @@ module.exports = {
 
     nav: [
       {
+        text: "Packages",
+        link: "/packages/maci-cli",
+        activeMatch: "^/packages/",
+      },
+      {
         text: "Specifications",
         link: "/specs/01_introduction",
         activeMatch: "^/specs/",
@@ -27,6 +32,7 @@ module.exports = {
     ],
 
     sidebar: {
+      "/packages/": getPackagesSidebar(),
       "/specs/": getSpecsSidebar(),
       "/": getGuideSidebar(),
     },
@@ -42,13 +48,18 @@ function getGuideSidebar() {
         { text: "Getting Started", link: "/getting-started" },
       ],
     },
+  ];
+}
+
+function getPackagesSidebar() {
+  return [
     {
       text: "Packages",
       children: [
-        { text: "MACI CLI", link: "/maci-cli" },
-        { text: "MACI Core", link: "/maci-core" },
-        { text: "MACI Domain Objects", link: "/maci-domainobjs" },
-        { text: "MACI Circuits", link: "/maci-circuits" },
+        { text: "MACI CLI", link: "/packages/maci-cli" },
+        { text: "MACI Core", link: "/packages/maci-core" },
+        { text: "MACI Domain Objects", link: "/packages/maci-domainobjs" },
+        { text: "MACI Circuits", link: "/packages/maci-circuits" },
       ],
     },
   ];

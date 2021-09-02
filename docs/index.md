@@ -4,7 +4,7 @@ Minimum Anti-Collusion Infrastructure (MACI) is a base layer for bribery-resista
 
 The documentation here pertains to version 1.0, temporarily located in the v1 branch.
 
-Applications like clr.fund build atop MACI to increase privacy and discourage bribery for public goods funding.
+Applications like [clr.fund](https://github.com/clrfund/monorepo) build atop MACI to increase privacy and discourage bribery for public goods funding.
 
 MACI offers the following guarantees:
 

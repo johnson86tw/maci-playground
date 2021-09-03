@@ -2,6 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { Ownable } from "./Ownable";
+export type { ERC20 } from "./ERC20";
+export type { IERC20 } from "./IERC20";
+export type { Election } from "./Election";
 export type { Greeter } from "./Greeter";
 export type { MACIFactory } from "./MACIFactory";
 export type { BatchUpdateStateTreeVerifier } from "./BatchUpdateStateTreeVerifier";
@@ -22,6 +25,9 @@ export type { PoseidonT6 } from "./PoseidonT6";
 export type { VerifyTally } from "./VerifyTally";
 
 export { Ownable__factory } from "./factories/Ownable__factory";
+export { ERC20__factory } from "./factories/ERC20__factory";
+export { IERC20__factory } from "./factories/IERC20__factory";
+export { Election__factory } from "./factories/Election__factory";
 export { Greeter__factory } from "./factories/Greeter__factory";
 export { MACIFactory__factory } from "./factories/MACIFactory__factory";
 export { BatchUpdateStateTreeVerifier__factory } from "./factories/BatchUpdateStateTreeVerifier__factory";

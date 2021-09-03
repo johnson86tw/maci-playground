@@ -8,7 +8,7 @@
     "node": "npx hardhat node",
     "deploy:local": "npx hardhat run --network localhost scripts/deploy.js",
     "build": "npx hardhat compile",
-    "tsc": "yarn run ts-node",
+    "ts": "yarn run ts-node",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs"

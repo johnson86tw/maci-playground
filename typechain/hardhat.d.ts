@@ -33,6 +33,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Greeter__factory>;
     getContractFactory(
+      name: "MACI",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MACI__factory>;
+    getContractFactory(
+      name: "SnarkVerifier",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.SnarkVerifier__factory>;
+    getContractFactory(
       name: "MACIFactory",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MACIFactory__factory>;

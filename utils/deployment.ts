@@ -14,7 +14,7 @@ export function linkBytecode(bytecode: string, libraries: { [name: string]: stri
   return linkable.evm.bytecode.object;
 }
 
-const CIRCUITS: { [name: string]: any } = {
+export const CIRCUITS: { [name: string]: any } = {
   test: {
     batchUstVerifier: "BatchUpdateStateTreeVerifier",
     qvtVerifier: "QuadVoteTallyVerifier",

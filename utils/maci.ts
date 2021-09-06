@@ -10,8 +10,8 @@ export class MaciParameters {
   messageBatchSize = 4;
   batchUstVerifier!: string;
   qvtVerifier!: string;
-  signUpDuration = 7 * 86400;
-  votingDuration = 7 * 86400;
+  signUpDuration = 7 * 86400; // 7 days
+  votingDuration = 7 * 86400; // 7 days
 
   constructor(parameters: { [name: string]: any } = {}) {
     this.update(parameters);

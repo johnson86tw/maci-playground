@@ -4,8 +4,9 @@
   "license": "MIT",
   "scripts": {
     "hardhat": "npx hardhat",
+    "hardhat:local": "npx hardhat run --network localhost --no-compile",
     "test": "npx hardhat test",
-    "node": "npx hardhat node",
+    "start": "npx hardhat node",
     "deploy:local": "npx hardhat run --network localhost scripts/deploy.js",
     "build": "npx hardhat compile",
     "ts": "yarn run ts-node",
@@ -35,6 +36,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "3.2.0",
+    "maci-cli": "^0.9.4",
     "maci-contracts": "^0.9.4",
     "maci-crypto": "^0.9.1",
     "maci-domainobjs": "^0.9.1"

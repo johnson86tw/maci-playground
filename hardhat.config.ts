@@ -17,19 +17,21 @@ task("accounts", "Prints the list of accounts", async (args, hre) => {
 
 // Copy Poseidon artifacts from maci-contracts
 task("compile", "Compiles the entire project, building all artifacts", async (_, { config }, runSuper) => {
-  await runSuper();
+  await runSuper(); // will remove existing poseidons files
 
   const poseidons = ["PoseidonT3", "PoseidonT6"];
   for (const contractName of poseidons) {
+    const filePath = path.join(config.paths.artifacts, `${contractName}.json`);
+
     const artifact = JSON.parse(
       fs.readFileSync(`./node_modules/maci-contracts/compiled/${contractName}.json`).toString(),
     );
-    fs.writeFileSync(
-      path.join(config.paths.artifacts, `${contractName}.json`),
-      JSON.stringify({ ...artifact, linkReferences: {} }),
-    );
-    console.log(`Successfully copied ${contractName}.json`);
+    fs.writeFileSync(filePath, JSON.stringify({ ...artifact, linkReferences: {} }));
+
+    if (!fs.existsSync(filePath)) throw new Error(`Failed to copied ${contractName}`);
   }
+
+  console.log("Successfully copied PoseidonT3.json and PoseidonT6.json to ./artifacts");
 });
 
 const config: HardhatUserConfig = {

@@ -15,6 +15,7 @@ async function main() {
   maci = (await ethers.getContractAt("contracts/MACI.sol:MACI", maciAddress, anyone)) as MACI;
 
   console.log("numSignUps: ", (await maci.numSignUps()).toString());
+  console.log("numMessages: ", (await maci.numMessages()).toString());
   console.log("signUpDeadline: ", new Date((await maci.calcSignUpDeadline()).toNumber() * 1000));
   console.log("votingDeadline: ", new Date((await maci.calcVotingDeadline()).toNumber() * 1000));
   console.log("totalVotes: ", (await maci.totalVotes()).toString());
@@ -23,7 +24,7 @@ async function main() {
   console.log();
 
   const ballot = (await ethers.getContractAt("Ballot", await maci.initialVoiceCreditProxy())) as Ballot;
-  console.log("Alice's initial voice credit: ", (await ballot.getVoiceCredits(alice.address, [])).toString());
+  console.log("Alice's voice credit: ", (await ballot.getVoiceCredits(alice.address, [])).toString());
 }
 
 main()

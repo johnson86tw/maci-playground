@@ -5,3 +5,6 @@ cache
 artifacts
 
 dist
+
+voters.json
+coordinator.json

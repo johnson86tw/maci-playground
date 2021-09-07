@@ -6,8 +6,8 @@ import { MACI__factory } from "../typechain/factories/MACI__factory";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { Keypair } from "maci-domainobjs";
 
-import { Ballot__factory } from "../typechain/factories/Ballot__factory";
-import { Ballot } from "../typechain/Ballot";
+import fs from "fs";
+import path from "path";
 
 async function main() {
   const [deployer, coordinator] = await ethers.getSigners();
@@ -17,6 +17,14 @@ async function main() {
   const coordinatorKeypair = new Keypair();
   const maci = await deployMaci(deployer, ballot.address, ballot.address, coordinatorKeypair.pubKey.asContractParam());
   console.log("MACI deployed to: ", maci.address);
+
+  const coordinatorData = {
+    pk: coordinatorKeypair.pubKey.serialize(),
+    maci: maci.address,
+  };
+
+  const filePath = path.join(__dirname, "/coordinator.json");
+  fs.writeFileSync(filePath, JSON.stringify(coordinatorData));
 }
 
 main()

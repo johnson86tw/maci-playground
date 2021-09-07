@@ -2,7 +2,8 @@ import { ethers } from "hardhat";
 import { Libraries } from "hardhat/types/runtime";
 import { Signer, Contract } from "ethers";
 import { link } from "ethereum-waffle";
-
+import { Ballot__factory } from "../typechain/factories/Ballot__factory";
+import { Ballot } from "../typechain/Ballot";
 import { MaciParameters } from "./maci";
 
 export function linkBytecode(bytecode: string, libraries: { [name: string]: string }): string {
@@ -89,4 +90,11 @@ export async function deployMaciFactory(
   const maciFactory = await MACIFactory.deploy(...maciParameters.values());
   await maciFactory.deployed();
   return maciFactory;
+}
+
+export async function deployBallot(signer: Signer, coordinatorAddr: string) {
+  const Ballot = (await ethers.getContractFactory("Ballot", signer)) as Ballot__factory;
+  const ballot = (await Ballot.deploy(coordinatorAddr)) as Ballot;
+  await ballot.deployed();
+  return ballot;
 }

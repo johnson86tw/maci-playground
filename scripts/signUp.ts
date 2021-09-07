@@ -17,13 +17,17 @@ async function main() {
   const [, , alice] = await ethers.getSigners();
   const userKeypair = new Keypair();
 
+  console.log("Private key:", userKeypair.privKey.serialize());
+  console.log("Public key: ", userKeypair.pubKey.serialize());
+
   maci = (await ethers.getContractAt("contracts/MACI.sol:MACI", maciAddress)) as MACI;
   console.log("maci address: ", maci.address);
 
   const maciAsAlice = maci.connect(alice);
   const tx = await maciAsAlice.signUp(userKeypair.pubKey.asContractParam(), DEFAULT_SG_DATA, DEFAULT_IVCP_DATA);
   const stateIndex = (await getEventArg(tx, maci, "SignUp", "_stateIndex")) as BigNumber;
-  console.log(stateIndex.toString());
+
+  console.log("State Index: ", stateIndex.toString());
   console.log("numSignUps: ", (await maci.numSignUps()).toString());
 }
 

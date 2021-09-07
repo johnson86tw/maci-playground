@@ -12,8 +12,12 @@ import "maci-contracts/sol/MACISharedObjs.sol";
 import "maci-contracts/sol/gatekeepers/SignUpGatekeeper.sol";
 import "maci-contracts/sol/initialVoiceCreditProxy/InitialVoiceCreditProxy.sol";
 
-contract Election is Ownable, MACISharedObjs, SignUpGatekeeper, InitialVoiceCreditProxy {
+import "hardhat/console.sol";
+
+contract Ballot is Ownable, MACISharedObjs, SignUpGatekeeper, InitialVoiceCreditProxy {
     address public coordinator;
+
+    uint256 public constant initialVoiceCredit = 99;
 
     constructor(address _coordinator) public {
         coordinator = _coordinator;
@@ -27,7 +31,9 @@ contract Election is Ownable, MACISharedObjs, SignUpGatekeeper, InitialVoiceCred
     function register(
         address, /* _caller */
         bytes memory _data
-    ) public override {}
+    ) public override {
+        console.log("User registered");
+    }
 
     /**
      * @dev Get the amount of voice credits for a given address.
@@ -37,5 +43,7 @@ contract Election is Ownable, MACISharedObjs, SignUpGatekeeper, InitialVoiceCred
     function getVoiceCredits(
         address, /* _caller */
         bytes memory _data
-    ) public view override returns (uint256) {}
+    ) public view override returns (uint256) {
+        return initialVoiceCredit;
+    }
 }

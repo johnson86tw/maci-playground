@@ -1,34 +1,21 @@
 import { ethers } from "hardhat";
 import { MaciParameters } from "../utils/maci";
-import { CIRCUITS } from "../utils/deployment";
+import { CIRCUITS, deployBallot } from "../utils/deployment";
 import { Libraries } from "hardhat/types/runtime";
 import { MACI__factory } from "../typechain/factories/MACI__factory";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { Keypair } from "maci-domainobjs";
 
-import { Election__factory } from "../typechain/factories/Election__factory";
-import { Election } from "../typechain/Election";
-
-export async function deployElection(signer: SignerWithAddress, coordinatorAddr: string) {
-  const Election = (await ethers.getContractFactory("Election")) as Election__factory;
-  const election = (await Election.deploy(coordinatorAddr)) as Election;
-  await election.deployed();
-  return election;
-}
+import { Ballot__factory } from "../typechain/factories/Ballot__factory";
+import { Ballot } from "../typechain/Ballot";
 
 async function main() {
   const [deployer, coordinator] = await ethers.getSigners();
 
-  const election = await deployElection(deployer, coordinator.address);
-  await election.deployed();
+  const ballot = await deployBallot(deployer, coordinator.address);
 
   const coordinatorKeypair = new Keypair();
-  const maci = await deployMaci(
-    deployer,
-    election.address,
-    election.address,
-    coordinatorKeypair.pubKey.asContractParam(),
-  );
+  const maci = await deployMaci(deployer, ballot.address, ballot.address, coordinatorKeypair.pubKey.asContractParam());
   console.log("MACI deployed to: ", maci.address);
 }
 

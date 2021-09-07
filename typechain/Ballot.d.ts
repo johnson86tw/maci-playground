@@ -19,10 +19,11 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
-interface ElectionInterface extends ethers.utils.Interface {
+interface BallotInterface extends ethers.utils.Interface {
   functions: {
     "coordinator()": FunctionFragment;
     "getVoiceCredits(address,bytes)": FunctionFragment;
+    "initialVoiceCredit()": FunctionFragment;
     "owner()": FunctionFragment;
     "register(address,bytes)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
@@ -36,6 +37,10 @@ interface ElectionInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "getVoiceCredits",
     values: [string, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "initialVoiceCredit",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -59,6 +64,10 @@ interface ElectionInterface extends ethers.utils.Interface {
     functionFragment: "getVoiceCredits",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "initialVoiceCredit",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "register", data: BytesLike): Result;
   decodeFunctionResult(
@@ -77,7 +86,7 @@ interface ElectionInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
 
-export class Election extends BaseContract {
+export class Ballot extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -118,7 +127,7 @@ export class Election extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: ElectionInterface;
+  interface: BallotInterface;
 
   functions: {
     coordinator(overrides?: CallOverrides): Promise<[string]>;
@@ -128,6 +137,8 @@ export class Election extends BaseContract {
       _data: BytesLike,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    initialVoiceCredit(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
@@ -155,6 +166,8 @@ export class Election extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  initialVoiceCredit(overrides?: CallOverrides): Promise<BigNumber>;
+
   owner(overrides?: CallOverrides): Promise<string>;
 
   register(
@@ -180,6 +193,8 @@ export class Election extends BaseContract {
       _data: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    initialVoiceCredit(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
@@ -216,6 +231,8 @@ export class Election extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    initialVoiceCredit(overrides?: CallOverrides): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     register(
@@ -240,6 +257,10 @@ export class Election extends BaseContract {
     getVoiceCredits(
       arg0: string,
       _data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    initialVoiceCredit(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

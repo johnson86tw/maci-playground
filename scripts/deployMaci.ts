@@ -9,6 +9,8 @@ import { Keypair } from "maci-domainobjs";
 import fs from "fs";
 import path from "path";
 
+const filePath = path.join(__dirname, "../", "/state.json");
+
 async function main() {
   const [deployer, coordinator] = await ethers.getSigners();
 
@@ -18,13 +20,15 @@ async function main() {
   const maci = await deployMaci(deployer, ballot.address, ballot.address, coordinatorKeypair.pubKey.asContractParam());
   console.log("MACI deployed to: ", maci.address);
 
-  const coordinatorData = {
-    pk: coordinatorKeypair.pubKey.serialize(),
+  // write file
+  const state = {
     maci: maci.address,
+    coordinator: {
+      pk: coordinatorKeypair.pubKey.serialize(),
+    },
   };
 
-  const filePath = path.join(__dirname, "/coordinator.json");
-  fs.writeFileSync(filePath, JSON.stringify(coordinatorData));
+  fs.writeFileSync(filePath, JSON.stringify(state));
 }
 
 main()

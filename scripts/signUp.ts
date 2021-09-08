@@ -6,11 +6,18 @@ import { BigNumber } from "@ethersproject/bignumber";
 import fs from "fs";
 import path from "path";
 
+const filePath = path.join(__dirname, "../", "/state.json");
+
 let maci: MACI;
 let maciAddress = "";
 if (hre.network.name === "localhost") {
   maciAddress = "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707";
 }
+
+type Voter = {
+  sk: string;
+  stateIndex: string;
+};
 
 const DEFAULT_SG_DATA = "0x0000000000000000000000000000000000000000000000000000000000000000";
 const DEFAULT_IVCP_DATA = "0x0000000000000000000000000000000000000000000000000000000000000000";
@@ -32,23 +39,27 @@ async function main() {
   console.log("State Index: ", stateIndex.toString());
   console.log("numSignUps: ", (await maci.numSignUps()).toString());
 
-  // writing voters.json
-
+  // write state.json
   const userData = {
     sk: userKeypair.privKey.serialize(),
-    maci: maci.address,
     stateIndex: stateIndex.toString(),
   };
 
-  const filePath = path.join(__dirname, "/voters.json");
-
   if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, JSON.stringify({ voters: [userData] }));
+    throw new Error("state.json not found: you should deploy maci at first.");
   } else {
-    const data = fs.readFileSync(filePath).toString();
-    const voters = JSON.parse(data).voters;
-    voters.push(userData);
-    fs.writeFileSync(filePath, JSON.stringify({ voters }));
+    const state = JSON.parse(fs.readFileSync(filePath).toString());
+    if (state.maci !== maci.address) throw new Error("Failed to write state.json: maci address not match.");
+
+    const voters: Voter[] | undefined = state.voters;
+    if (voters) {
+      voters.push(userData);
+      state.voters = voters;
+    } else {
+      state.voters = [userData];
+    }
+
+    fs.writeFileSync(filePath, JSON.stringify(state));
   }
 }
 

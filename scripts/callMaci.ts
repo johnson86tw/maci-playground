@@ -20,6 +20,7 @@ async function main() {
   console.log("votingDeadline: ", new Date((await maci.calcVotingDeadline()).toNumber() * 1000));
   console.log("totalVotes: ", (await maci.totalVotes()).toString());
   console.log("voteOptionsMaxLeafIndex:", (await maci.voteOptionsMaxLeafIndex()).toString());
+  console.log("treeDepths: ", await maci.treeDepths());
 
   console.log();
 

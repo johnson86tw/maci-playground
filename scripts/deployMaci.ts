@@ -24,6 +24,7 @@ async function main() {
   const state = {
     maci: maci.address,
     coordinator: {
+      sk: coordinatorKeypair.privKey.serialize(),
       pk: coordinatorKeypair.pubKey.serialize(),
     },
   };

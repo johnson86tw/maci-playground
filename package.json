@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "hardhat": "npx hardhat",
+    "compile": "npx hardhat compile",
     "hardhat:local": "npx hardhat run --network localhost --no-compile",
     "test": "npx hardhat test",
     "start": "npx hardhat node",

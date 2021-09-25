@@ -22,6 +22,12 @@ Start hardhat network at http://127.0.0.1:8545/
 yarn start
 ```
 
+Compile contracts
+
+```sh
+yarn compile
+```
+
 Deploy MACI, Ballot, and others.
 
 ```sh

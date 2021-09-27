@@ -41,14 +41,17 @@ async function main() {
 
   // sign signature
   const stateIndex = BigInt(voter.stateIndex)
-  const voteOptionIndex = BigInt(0)
-  const voteWeight = BigInt(4)
-  const nonce = BigInt(1) // warning: if nonce is zero, it will not be tallyed.
-  const salt = genRandomSalt()
+  let voteOptionIndex = BigInt(1)
+  let voteWeight = BigInt(9)
+  let nonce = BigInt(1) // warning: if nonce is zero, it will not be tallyed.
+  let salt = genRandomSalt()
 
   const encKeypair = new Keypair()
 
-  const command = new Command(stateIndex, voterKeypair.pubKey, voteOptionIndex, voteWeight, nonce, salt)
+  const newKeypair = new Keypair()
+  const newPubKey = newKeypair.pubKey
+
+  const command = new Command(stateIndex, newPubKey, voteOptionIndex, voteWeight, nonce, salt)
 
   // sign and encrypt message
   const signature = command.sign(voterKeypair.privKey)
@@ -57,21 +60,29 @@ async function main() {
     Keypair.genEcdhSharedKey(encKeypair.privKey, PubKey.unserialize(coordinator.pk)),
   )
 
-  // publish message
+  // change key message
   const [, , alice] = await ethers.getSigners()
   maci = (await ethers.getContractAt('contracts/MACI.sol:MACI', maciAddress, alice)) as MACI
-
-  // Validate the vote option index against the max leaf index on-chain
-  const maxVoteOptions = (await maci.voteOptionsMaxLeafIndex()).toNumber()
-  if (maxVoteOptions < voteOptionIndex) {
-    throw new Error('Error: the vote option index is invalid')
-  }
-
   // @ts-ignore
   await maci.publishMessage(message.asContractParam(), encKeypair.pubKey.asContractParam())
-  console.log('Successfully publish message')
+  console.log('Successfully change key, new macipk: ', newPubKey.serialize())
 
-  console.log('numMessages: ', (await maci.numMessages()).toString())
+  // new Vote
+
+  // voteOptionIndex = BigInt(1)
+  // voteWeight = BigInt(9)
+  // nonce = BigInt(2) // warning: if nonce is zero, it will not be tallyed.
+  // salt = genRandomSalt()
+
+  // const command2 = new Command(stateIndex, newPubKey, voteOptionIndex, voteWeight, nonce, salt)
+  // const signature2 = command2.sign(voterKeypair.privKey)
+  // const message2 = command2.encrypt(
+  //   signature2,
+  //   Keypair.genEcdhSharedKey(encKeypair.privKey, PubKey.unserialize(coordinator.pk)),
+  // )
+  // // @ts-ignore
+  // await maci.publishMessage(message2.asContractParam(), encKeypair.pubKey.asContractParam())
+  // console.log('Successfully publish new decision.')
 }
 
 main()

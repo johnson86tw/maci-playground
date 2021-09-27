@@ -1,7 +1,7 @@
 # MACI playground
 
 
-## Guild
+## Guilds
 
 Install dependencies
 ```
@@ -57,7 +57,10 @@ Publish Messages
 yarn hardhat:local scripts/submitMessageBatch.ts
 ```
 
-Change Decisions
+Change Key
+```sh
+yarn hardhat:local scripts/changeVote.ts
+```
 
 
 ### Tally

@@ -34,6 +34,12 @@ Deploy MACI, Ballot, and others.
 yarn hardhat:local scripts/deployMaci.ts
 ```
 
+Get maci info
+
+```sh
+yarn hardhat:local scripts/callMaci.ts 
+```
+
 ### Vote
 
 Sign up
@@ -46,10 +52,19 @@ Publish Message
 yarn hardhat:local scripts/vote.ts
 ```
 
+Publish Messages
+```sh
+yarn hardhat:local scripts/submitMessageBatch.ts
+```
+
 Change Decisions
 
 
 ### Tally
+
+```sh
+yarn hardhat:local scripts/tallyWithoutProofs.ts
+```
 
 ```sh
 yarn hardhat:local scripts/tally.ts

@@ -1,9 +1,10 @@
 import hre, { ethers } from 'hardhat'
 import { MACI } from '../typechain/MACI'
-import { Command, Keypair, PrivKey, PubKey } from 'maci-domainobjs'
+import { Command, Keypair, Message, PrivKey, PubKey } from 'maci-domainobjs'
 import fs from 'fs'
 import path from 'path'
-import { genRandomSalt } from 'maci-crypto'
+import { createMessage } from '../utils/maci'
+import { BigNumber } from '@ethersproject/bignumber'
 
 const filePath = path.join(__dirname, '../', '/state.json')
 
@@ -39,37 +40,45 @@ async function main() {
   console.log('Private key: ', voterKeypair.privKey.serialize())
   console.log('Public key: ', voterKeypair.pubKey.serialize())
 
-  // sign signature
-  const stateIndex = BigInt(voter.stateIndex)
-  const voteOptionIndex = BigInt(0)
-  const voteWeight = BigInt(2)
-  const nonce = BigInt(1) // warning: if nonce is zero, it will not be tallyed.
-  const salt = genRandomSalt()
+  const votes = [
+    [0, 2],
+    [1, 9],
+  ]
 
-  const encKeypair = new Keypair()
+  const messages: Message[] = []
+  const encPubKeys: PubKey[] = []
 
-  const command = new Command(stateIndex, voterKeypair.pubKey, voteOptionIndex, voteWeight, nonce, salt)
+  let nonce = 1
+  for (const [voteOptionIndex, voiceCredits] of votes) {
+    const [message, encPubKey] = createMessage(
+      Number(voter.stateIndex),
+      voterKeypair,
+      null,
+      PubKey.unserialize(coordinator.pk),
+      voteOptionIndex,
+      BigNumber.from(voiceCredits),
+      nonce,
+    )
+    messages.push(message)
+    encPubKeys.push(encPubKey)
+    nonce += 1
+  }
 
-  // sign and encrypt message
-  const signature = command.sign(voterKeypair.privKey)
-  const message = command.encrypt(
-    signature,
-    Keypair.genEcdhSharedKey(encKeypair.privKey, PubKey.unserialize(coordinator.pk)),
-  )
-
-  // publish message
   const [, , alice] = await ethers.getSigners()
   maci = (await ethers.getContractAt('contracts/MACI.sol:MACI', maciAddress, alice)) as MACI
 
-  // Validate the vote option index against the max leaf index on-chain
-  const maxVoteOptions = (await maci.voteOptionsMaxLeafIndex()).toNumber()
-  if (maxVoteOptions < voteOptionIndex) {
-    throw new Error('Error: the vote option index is invalid')
+  for (let i = votes.length - 1; i >= 0; i--) {
+    // @ts-ignore
+    const tx = await maci.publishMessage(messages[i].asContractParam(), encPubKeys[i].asContractParam())
+    await tx.wait()
   }
 
-  // @ts-ignore
-  await maci.publishMessage(message.asContractParam(), encKeypair.pubKey.asContractParam())
-  console.log('Successfully publish message')
+  // This will fail.
+  // for (let i = 0; i < votes.length; i++) {
+  //   // @ts-ignore
+  //   const tx = await maci.publishMessage(messages[i].asContractParam(), encPubKeys[i].asContractParam())
+  //   await tx.wait()
+  // }
 
   console.log('numMessages: ', (await maci.numMessages()).toString())
 }

@@ -1,25 +1,25 @@
-import { Contract, BigNumber } from "ethers";
-import { genRandomSalt, IncrementalQuinTree } from "maci-crypto";
-import { Keypair, PubKey, Command, Message } from "maci-domainobjs";
+import { Contract, BigNumber } from 'ethers'
+import { genRandomSalt, IncrementalQuinTree } from 'maci-crypto'
+import { Keypair, PubKey, Command, Message } from 'maci-domainobjs'
 
 export class MaciParameters {
-  stateTreeDepth = 4;
-  messageTreeDepth = 4;
-  voteOptionTreeDepth = 2;
-  tallyBatchSize = 4;
-  messageBatchSize = 4;
-  batchUstVerifier!: string;
-  qvtVerifier!: string;
-  signUpDuration = 7 * 86400; // 7 days
-  votingDuration = 7 * 86400; // 7 days
+  stateTreeDepth = 4
+  messageTreeDepth = 4
+  voteOptionTreeDepth = 2
+  tallyBatchSize = 4
+  messageBatchSize = 4
+  batchUstVerifier!: string
+  qvtVerifier!: string
+  signUpDuration = 30
+  votingDuration = 7 * 86400 // 7 days
 
   constructor(parameters: { [name: string]: any } = {}) {
-    this.update(parameters);
+    this.update(parameters)
   }
 
   update(parameters: { [name: string]: any }) {
     for (const [name, value] of Object.entries(parameters)) {
-      (this as any)[name] = value;
+      ;(this as any)[name] = value
     }
   }
 
@@ -35,16 +35,16 @@ export class MaciParameters {
       this.qvtVerifier,
       this.signUpDuration,
       this.votingDuration,
-    ];
+    ]
   }
 
   static async read(maciFactory: Contract): Promise<MaciParameters> {
-    const { stateTreeDepth, messageTreeDepth, voteOptionTreeDepth } = await maciFactory.treeDepths();
-    const { tallyBatchSize, messageBatchSize } = await maciFactory.batchSizes();
-    const batchUstVerifier = await maciFactory.batchUstVerifier();
-    const qvtVerifier = await maciFactory.qvtVerifier();
-    const signUpDuration = (await maciFactory.signUpDuration()).toNumber();
-    const votingDuration = (await maciFactory.votingDuration()).toNumber();
+    const { stateTreeDepth, messageTreeDepth, voteOptionTreeDepth } = await maciFactory.treeDepths()
+    const { tallyBatchSize, messageBatchSize } = await maciFactory.batchSizes()
+    const batchUstVerifier = await maciFactory.batchUstVerifier()
+    const qvtVerifier = await maciFactory.qvtVerifier()
+    const signUpDuration = (await maciFactory.signUpDuration()).toNumber()
+    const votingDuration = (await maciFactory.votingDuration()).toNumber()
     return new MaciParameters({
       stateTreeDepth,
       messageTreeDepth,
@@ -55,7 +55,7 @@ export class MaciParameters {
       qvtVerifier,
       signUpDuration,
       votingDuration,
-    });
+    })
   }
 }
 
@@ -63,15 +63,15 @@ export function bnSqrt(a: BigNumber): BigNumber {
   // Take square root from a big number
   // https://stackoverflow.com/a/52468569/1868395
   if (a.isZero()) {
-    return a;
+    return a
   }
-  let x;
-  let x1 = a.div(2);
+  let x
+  let x1 = a.div(2)
   do {
-    x = x1;
-    x1 = x.add(a.div(x)).div(2);
-  } while (!x.eq(x1));
-  return x;
+    x = x1
+    x1 = x.add(a.div(x)).div(2)
+  } while (!x.eq(x1))
+  return x
 }
 
 export function createMessage(
@@ -84,11 +84,11 @@ export function createMessage(
   nonce: number,
   salt?: BigInt,
 ): [Message, PubKey] {
-  const encKeypair = new Keypair();
+  const encKeypair = new Keypair()
   if (!salt) {
-    salt = genRandomSalt();
+    salt = genRandomSalt()
   }
-  const quadraticVoteWeight = voiceCredits ? bnSqrt(voiceCredits) : 0;
+  const quadraticVoteWeight = voiceCredits ? bnSqrt(voiceCredits) : 0
   const command = new Command(
     BigInt(userStateIndex),
     newUserKeypair ? newUserKeypair.pubKey : userKeypair.pubKey,
@@ -96,29 +96,29 @@ export function createMessage(
     BigInt(quadraticVoteWeight.toString()),
     BigInt(nonce),
     BigInt(salt.toString()),
-  );
-  const signature = command.sign(userKeypair.privKey);
-  const message = command.encrypt(signature, Keypair.genEcdhSharedKey(encKeypair.privKey, coordinatorPubKey));
-  return [message, encKeypair.pubKey];
+  )
+  const signature = command.sign(userKeypair.privKey)
+  const message = command.encrypt(signature, Keypair.genEcdhSharedKey(encKeypair.privKey, coordinatorPubKey))
+  return [message, encKeypair.pubKey]
 }
 
 export function getRecipientClaimData(recipientIndex: number, recipientTreeDepth: number, tally: any): any[] {
   // Create proof for tally result
-  const result = tally.results.tally[recipientIndex];
-  const resultSalt = tally.results.salt;
-  const resultTree = new IncrementalQuinTree(recipientTreeDepth, BigInt(0));
+  const result = tally.results.tally[recipientIndex]
+  const resultSalt = tally.results.salt
+  const resultTree = new IncrementalQuinTree(recipientTreeDepth, BigInt(0))
   for (const leaf of tally.results.tally) {
-    resultTree.insert(leaf);
+    resultTree.insert(leaf)
   }
-  const resultProof = resultTree.genMerklePath(recipientIndex);
+  const resultProof = resultTree.genMerklePath(recipientIndex)
   // Create proof for total amount of spent voice credits
-  const spent = tally.totalVoiceCreditsPerVoteOption.tally[recipientIndex];
-  const spentSalt = tally.totalVoiceCreditsPerVoteOption.salt;
-  const spentTree = new IncrementalQuinTree(recipientTreeDepth, BigInt(0));
+  const spent = tally.totalVoiceCreditsPerVoteOption.tally[recipientIndex]
+  const spentSalt = tally.totalVoiceCreditsPerVoteOption.salt
+  const spentTree = new IncrementalQuinTree(recipientTreeDepth, BigInt(0))
   for (const leaf of tally.totalVoiceCreditsPerVoteOption.tally) {
-    spentTree.insert(leaf);
+    spentTree.insert(leaf)
   }
-  const spentProof = spentTree.genMerklePath(recipientIndex);
+  const spentProof = spentTree.genMerklePath(recipientIndex)
 
   return [
     recipientIndex,
@@ -128,5 +128,5 @@ export function getRecipientClaimData(recipientIndex: number, recipientTreeDepth
     spent,
     spentProof.pathElements.map(x => x.map(y => y.toString())),
     spentSalt,
-  ];
+  ]
 }

@@ -60,29 +60,13 @@ async function main() {
     Keypair.genEcdhSharedKey(encKeypair.privKey, PubKey.unserialize(coordinator.pk)),
   )
 
-  // change key message
-  const [, , alice] = await ethers.getSigners()
-  maci = (await ethers.getContractAt('contracts/MACI.sol:MACI', maciAddress, alice)) as MACI
+  // change decision
+  // Alice can use any eth account to change her decision secretly
+  const [, , alice, alice2] = await ethers.getSigners()
+  maci = (await ethers.getContractAt('contracts/MACI.sol:MACI', maciAddress, alice2)) as MACI
   // @ts-ignore
   await maci.publishMessage(message.asContractParam(), encKeypair.pubKey.asContractParam())
   console.log('Successfully change key, new macipk: ', newPubKey.serialize())
-
-  // new Vote
-
-  // voteOptionIndex = BigInt(1)
-  // voteWeight = BigInt(9)
-  // nonce = BigInt(2) // warning: if nonce is zero, it will not be tallyed.
-  // salt = genRandomSalt()
-
-  // const command2 = new Command(stateIndex, newPubKey, voteOptionIndex, voteWeight, nonce, salt)
-  // const signature2 = command2.sign(voterKeypair.privKey)
-  // const message2 = command2.encrypt(
-  //   signature2,
-  //   Keypair.genEcdhSharedKey(encKeypair.privKey, PubKey.unserialize(coordinator.pk)),
-  // )
-  // // @ts-ignore
-  // await maci.publishMessage(message2.asContractParam(), encKeypair.pubKey.asContractParam())
-  // console.log('Successfully publish new decision.')
 }
 
 main()
